@@ -2,9 +2,16 @@
 import { ViewTransitions } from "astro:transitions";
 import { SoundForm, sound } from "../components/SoundForm.tsx";
 
+const { R2 } = Astro.locals.runtime.env;
 const soundRequest = await Astro.locals.form.getData(sound);
 
-console.log(soundRequest);
+let key: string | undefined;
+if (soundRequest?.data) {
+  const { audioFile } = soundRequest.data;
+
+  await R2.put(audioFile.name, await audioFile.arrayBuffer());
+  key = audioFile.name;
+}
 ---
 
 <html lang="en">
@@ -19,5 +26,12 @@ console.log(soundRequest);
   <body>
     <h1>WOMP</h1>
     <SoundForm client:load />
+    {
+      key && (
+        <audio controls>
+          <source src={`/audio/${key}`} type="audio/mpeg" />
+        </audio>
+      )
+    }
   </body>
 </html>
