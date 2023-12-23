@@ -12,10 +12,8 @@ export const GET: APIRoute = async (ctx) => {
     return new Response(`${key} not found`, { status: 404 });
   }
 
-  // const headers = new Headers();
-  // obj.writeHttpMetadata(headers);
+  const headers = new Headers(Object.entries(obj.httpMetadata ?? {}));
+  headers.set("etag", obj.httpEtag);
 
-  // headers.set("etag", obj.httpEtag);
-
-  return new Response(obj.body);
+  return new Response(obj.body as ReadableStream);
 };
