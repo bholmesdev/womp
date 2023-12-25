@@ -9,6 +9,9 @@ import {
 import { ViewTransitions } from "astro:transitions";
 import { db, eq, Sound } from "astro:db";
 import { safeId } from "../utils";
+import untypedData, { type EmojiMartData } from "@emoji-mart/data";
+
+const data = untypedData as EmojiMartData;
 
 const { R2 } = Astro.locals.runtime.env;
 const newSoundReq = await Astro.locals.form.getDataByName(
@@ -75,9 +78,12 @@ if (newSoundReq?.data) {
 
   await R2.put(key, await audioFile.arrayBuffer());
 
+  const emojis = Object.values(data.emojis);
+  const randomIdx = Math.floor(Math.random() * emojis.length);
+
   await db.insert(Sound).values({
     boardId: "TODO-board-id",
-    emojiId: "airplane",
+    emojiId: emojis[randomIdx]!.id,
     audioFileName: audioFile.name,
     audioFileKey: key,
   });
