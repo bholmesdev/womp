@@ -2,6 +2,7 @@ import { createForm } from "simple:form";
 import { FileDropInput, Form } from "./Form";
 import { z } from "zod";
 import { useRef } from "react";
+import { Button } from "react-aria-components";
 
 const audioFileValidator = z
   .instanceof(File)
@@ -45,11 +46,16 @@ export function NewSoundDropZone() {
     >
       <FileDropInput
         name="audioFile"
-        className="dark:text-gray-600 py-10 inset-0 data-[drop-target]:dark:bg-gray-900 transition-all data-[drop-target]:scale-105 data-[drop-target]:text-white grid place-items-center rounded-md border dark:border-gray-800 border-dashed"
+        fileTriggerBtn={
+          <Button className="dark:text-gray-200 dark:bg-gray-800 rounded py-2 px-4">
+            Select files
+          </Button>
+        }
+        className="dark:text-gray-600 py-6 inset-0 data-[drop-target]:dark:bg-gray-900 transition-all data-[drop-target]:scale-105 data-[drop-target]:text-white grid place-items-center rounded-md border dark:border-gray-800 border-dashed gap-3"
       >
         <span className="flex flex-col items-center gap-3">
           <DocumentArrowDown />
-          Drag your sounds here
+          Drag sounds here
         </span>
       </FileDropInput>
     </Form>

@@ -10,6 +10,7 @@ import {
 } from "react";
 import {
   DropZone,
+  FileTrigger,
   type DropZoneProps,
   type FileDropItem,
 } from "react-aria-components";
@@ -103,7 +104,15 @@ export function Form({
   );
 }
 
-export function FileDropInput(props: DropZoneProps & { name: string }) {
+export function FileDropInput({
+  children,
+  fileTriggerBtn,
+  ...props
+}: DropZoneProps & {
+  name: string;
+  children: React.ReactNode;
+  fileTriggerBtn?: React.ReactNode;
+}) {
   const formContext = useFormContext();
   const { formRef, validator } = formContext;
   const fieldState = formContext.value.fields[props.name];
@@ -111,6 +120,25 @@ export function FileDropInput(props: DropZoneProps & { name: string }) {
     throw new Error(
       `Input "${props.name}" not found in form. Did you use the <Form> component?`
     );
+  }
+
+  async function uploadFile(file: File) {
+    if (!formRef?.current) return;
+
+    const formData = new FormData(formRef.current);
+    formData.set(props.name, file);
+
+    formContext.set((formState) => ({
+      ...formState,
+      isSubmitPending: true,
+      submitStatus: "validating",
+    }));
+    const parsed = await validateForm({ formData, validator });
+    if (parsed.data) {
+      navigate(window.location.href, { formData });
+      return formContext.trackAstroSubmitStatus();
+    }
+    formContext.setValidationErrors(parsed.fieldErrors);
   }
 
   return (
@@ -124,26 +152,27 @@ export function FileDropInput(props: DropZoneProps & { name: string }) {
           | FileDropItem
           | undefined;
         if (!fileDropItem) return;
-
-        if (!formRef?.current) return;
-
-        const formData = new FormData(formRef.current);
         const file = await fileDropItem.getFile();
-        formData.set(props.name, file);
 
-        formContext.set((formState) => ({
-          ...formState,
-          isSubmitPending: true,
-          submitStatus: "validating",
-        }));
-        const parsed = await validateForm({ formData, validator });
-        if (parsed.data) {
-          navigate(window.location.href, { formData });
-          return formContext.trackAstroSubmitStatus();
-        }
-        formContext.setValidationErrors(parsed.fieldErrors);
+        uploadFile(file);
       }}
-    />
+    >
+      {children}
+      {fileTriggerBtn && (
+        <FileTrigger
+          allowsMultiple
+          onSelect={(e) => {
+            const files = e ? Array.from(e) : [];
+            const file = files[0];
+            if (!file) return;
+
+            uploadFile(file);
+          }}
+        >
+          {fileTriggerBtn}
+        </FileTrigger>
+      )}
+    </DropZone>
   );
 }
 
