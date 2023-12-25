@@ -80,6 +80,8 @@ export function useSubmit(formContext: FormContextType) {
       return formContext.trackAstroSubmitStatus();
     }
 
+    console.log("file", formData.get("test"), parsed.fieldErrors);
+
     formContext.setValidationErrors(parsed.fieldErrors);
   };
 

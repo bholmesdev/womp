@@ -1,7 +1,8 @@
 ---
 import {
   newSound,
-  editSound,
+  editEmoji,
+  editFile,
   NewSoundDropZone,
   EditCard,
 } from "../components/Boards";
@@ -15,13 +16,18 @@ const newSoundReq = await Astro.locals.form.getDataByName(
   newSound
 );
 
-const editSoundReq = await Astro.locals.form.getDataByName(
-  "edit-sound",
-  editSound
+const editEmojiReq = await Astro.locals.form.getDataByName(
+  "edit-emoji",
+  editEmoji
 );
 
-if (editSoundReq?.data) {
-  const { id, audioFile } = editSoundReq.data;
+const editFileReq = await Astro.locals.form.getDataByName(
+  "edit-file",
+  editFile
+);
+
+if (editEmojiReq?.data) {
+  const { id, emojiId, emojiSkin = null } = editEmojiReq.data;
   const entry = await db
     .select({ key: Sound.audioFileKey })
     .from(Sound)
@@ -31,7 +37,29 @@ if (editSoundReq?.data) {
     Astro.response.status = 404;
     Astro.response.statusText = `Sound ${id} not found`;
   } else {
-    await R2.put(entry.key, await audioFile.arrayBuffer());
+    await db
+      .update(Sound)
+      .set({
+        emojiId,
+        emojiSkin,
+      })
+      .where(eq(Sound.id, id));
+  }
+}
+
+if (editFileReq?.data) {
+  const { id, audioFile } = editFileReq.data;
+  const entry = await db
+    .select({ key: Sound.audioFileKey })
+    .from(Sound)
+    .where(eq(Sound.id, id))
+    .get();
+  if (!entry) {
+    Astro.response.status = 404;
+    Astro.response.statusText = `Sound ${id} not found`;
+  } else {
+    const { key } = entry;
+    await R2.put(key, await audioFile.arrayBuffer());
     await db
       .update(Sound)
       .set({
@@ -49,7 +77,7 @@ if (newSoundReq?.data) {
 
   await db.insert(Sound).values({
     boardId: "TODO-board-id",
-    emoji: "TODO-random-emoji",
+    emojiId: "airplane",
     audioFileName: audioFile.name,
     audioFileKey: key,
   });
@@ -58,7 +86,8 @@ if (newSoundReq?.data) {
 const sounds = await db
   .select({
     id: Sound.id,
-    emoji: Sound.emoji,
+    emojiId: Sound.emojiId,
+    emojiSkin: Sound.emojiSkin,
     audioFileName: Sound.audioFileName,
     audioFileKey: Sound.audioFileKey,
   })
@@ -84,6 +113,8 @@ const sounds = await db
             id={s.id}
             audioFileKey={s.audioFileKey}
             audioFileName={s.audioFileName}
+            emojiId={s.emojiId}
+            emojiSkin={s.emojiSkin ?? undefined}
           />
         ))
       }
