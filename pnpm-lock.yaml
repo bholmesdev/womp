@@ -17,6 +17,12 @@ dependencies:
   '@astrojs/tailwind':
     specifier: ^5.0.4
     version: 5.0.4(astro@4.0.7)(tailwindcss@3.4.0)
+  '@emoji-mart/data':
+    specifier: ^1.1.2
+    version: 1.1.2
+  '@emoji-mart/react':
+    specifier: ^1.1.1
+    version: 1.1.1(emoji-mart@5.5.2)(react@18.2.0)
   '@types/react':
     specifier: ^18.2.45
     version: 18.2.45
@@ -26,6 +32,9 @@ dependencies:
   astro:
     specifier: ^4.0.7
     version: 4.0.7(typescript@5.3.3)
+  emoji-mart:
+    specifier: ^5.5.2
+    version: 5.5.2
   nanoid:
     specifier: ^5.0.4
     version: 5.0.4
@@ -629,6 +638,20 @@ packages:
 
   /@emmetio/scanner@1.0.4:
     resolution: {integrity: sha512-IqRuJtQff7YHHBk4G8YZ45uB9BaAGcwQeVzgj/zj8/UdOhtQpEIupUhSk8dys6spFIWVZVeK20CzGEnqR5SbqA==}
+    dev: false
+
+  /@emoji-mart/data@1.1.2:
+    resolution: {integrity: sha512-1HP8BxD2azjqWJvxIaWAMyTySeZY0Osr83ukYjltPVkNXeJvTz7yDrPLBtnrD5uqJ3tg4CcLuuBW09wahqL/fg==}
+    dev: false
+
+  /@emoji-mart/react@1.1.1(emoji-mart@5.5.2)(react@18.2.0):
+    resolution: {integrity: sha512-NMlFNeWgv1//uPsvLxvGQoIerPuVdXwK/EUek8OOkJ6wVOWPUizRBJU0hDqWZCOROVpfBgCemaC3m6jDOXi03g==}
+    peerDependencies:
+      emoji-mart: ^5.2
+      react: ^16.8 || ^17 || ^18
+    dependencies:
+      emoji-mart: 5.5.2
+      react: 18.2.0
     dev: false
 
   /@esbuild/aix-ppc64@0.19.10:
@@ -3723,6 +3746,10 @@ packages:
     dependencies:
       '@emmetio/abbreviation': 2.3.3
       '@emmetio/css-abbreviation': 2.1.8
+    dev: false
+
+  /emoji-mart@5.5.2:
+    resolution: {integrity: sha512-Sqc/nso4cjxhOwWJsp9xkVm8OF5c+mJLZJFoFfzRuKO+yWiN7K8c96xmtughYb0d/fZ8UC6cLIQ/p4BR6Pv3/A==}
     dev: false
 
   /emoji-regex@10.3.0:
