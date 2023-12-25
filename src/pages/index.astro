@@ -72,11 +72,11 @@ const sounds = await db
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <ViewTransitions />
-    <title>Astro</title>
+    <title>WOMP</title>
   </head>
-  <body class="dark:bg-gray-950 dark:text-white">
+  <body class="dark:bg-gray-950 dark:text-white min-h-screen flex flex-col">
     <h1>WOMP</h1>
-    <div class="max-w-screen-lg m-auto grid md:grid-cols-3 grid-cols-1 gap-3">
+    <div class="px-3 max-w-screen-lg grid sm:grid-cols-3 grid-cols-2 gap-3">
       {
         sounds.map((s) => (
           <EditCard
@@ -88,6 +88,10 @@ const sounds = await db
         ))
       }
     </div>
-    <NewSoundDropZone client:load />
+    <div
+      class="flex-1 sticky bottom-0 dark:bg-gray-950 shadow-2xl shadow-gray-900 grid place-items-stretch"
+    >
+      <NewSoundDropZone client:load />
+    </div>
   </body>
 </html>
