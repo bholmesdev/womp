@@ -7,12 +7,14 @@ import {
   useContext,
   useState,
   useRef,
+  type FormEvent,
 } from "react";
 import {
   DropZone,
   FileTrigger,
   type DropZoneProps,
   type FileDropItem,
+  type FileTriggerProps,
 } from "react-aria-components";
 import {
   type FieldErrors,
@@ -58,6 +60,32 @@ type FormContextType = ReturnType<typeof useCreateFormContext>;
 
 const FormContext = createContext<FormContextType | undefined>(undefined);
 
+export function useSubmit(formContext: FormContextType) {
+  const handleSubmit = async (formData: FormData, e?: FormEvent) => {
+    e?.preventDefault();
+    e?.stopPropagation();
+
+    formContext.set((formState) => ({
+      ...formState,
+      isSubmitPending: true,
+      submitStatus: "validating",
+    }));
+
+    const parsed = await validateForm({
+      formData,
+      validator: formContext.validator,
+    });
+    if (parsed.data) {
+      navigate(window.location.href, { formData });
+      return formContext.trackAstroSubmitStatus();
+    }
+
+    formContext.setValidationErrors(parsed.fieldErrors);
+  };
+
+  return handleSubmit;
+}
+
 export function Form({
   children,
   validator,
@@ -73,6 +101,7 @@ export function Form({
   const formRef = useRef<HTMLFormElement>(null);
   const formContext =
     context ?? useCreateFormContext(validator, fieldErrors, formRef);
+  const submit = useSubmit(formContext);
 
   return (
     <FormContext.Provider value={formContext}>
@@ -80,22 +109,7 @@ export function Form({
         {...formProps}
         ref={formRef}
         method="POST"
-        onSubmit={async (e) => {
-          const formData = new FormData(e.currentTarget);
-          formContext.set((formState) => ({
-            ...formState,
-            isSubmitPending: true,
-            submitStatus: "validating",
-          }));
-          const parsed = await validateForm({ formData, validator });
-          if (parsed.data) {
-            return formContext.trackAstroSubmitStatus();
-          }
-
-          e.preventDefault();
-          e.stopPropagation();
-          formContext.setValidationErrors(parsed.fieldErrors);
-        }}
+        onSubmit={(e) => submit(new FormData(e.currentTarget), e)}
       >
         {name ? <input {...formNameInputProps} value={name} /> : null}
         {children}
@@ -104,46 +118,23 @@ export function Form({
   );
 }
 
-export function FileDropInput({
-  children,
-  fileTriggerBtn,
-  ...props
+export function FileDropSubmit({
+  name,
+  ...dropZoneProps
 }: DropZoneProps & {
   name: string;
-  children: React.ReactNode;
-  fileTriggerBtn?: React.ReactNode;
 }) {
   const formContext = useFormContext();
-  const { formRef, validator } = formContext;
-  const fieldState = formContext.value.fields[props.name];
+  const submit = useSubmit(formContext);
+  const fieldState = formContext.value.fields[name];
   if (!fieldState) {
     throw new Error(
-      `Input "${props.name}" not found in form. Did you use the <Form> component?`
+      `Input "${name}" not found in form. Did you use the <Form> component?`
     );
-  }
-
-  async function uploadFile(file: File) {
-    if (!formRef?.current) return;
-
-    const formData = new FormData(formRef.current);
-    formData.set(props.name, file);
-
-    formContext.set((formState) => ({
-      ...formState,
-      isSubmitPending: true,
-      submitStatus: "validating",
-    }));
-    const parsed = await validateForm({ formData, validator });
-    if (parsed.data) {
-      navigate(window.location.href, { formData });
-      return formContext.trackAstroSubmitStatus();
-    }
-    formContext.setValidationErrors(parsed.fieldErrors);
   }
 
   return (
     <DropZone
-      {...props}
       getDropOperation={(types) =>
         types.has("audio/mpeg") ? "copy" : "cancel"
       }
@@ -154,25 +145,42 @@ export function FileDropInput({
         if (!fileDropItem) return;
         const file = await fileDropItem.getFile();
 
-        uploadFile(file);
-      }}
-    >
-      {children}
-      {fileTriggerBtn && (
-        <FileTrigger
-          allowsMultiple
-          onSelect={(e) => {
-            const files = e ? Array.from(e) : [];
-            const file = files[0];
-            if (!file) return;
+        const formData = new FormData(
+          formContext.formRef?.current ?? undefined
+        );
+        formData.set(name, file);
 
-            uploadFile(file);
-          }}
-        >
-          {fileTriggerBtn}
-        </FileTrigger>
-      )}
-    </DropZone>
+        submit(formData);
+      }}
+      {...dropZoneProps}
+    />
+  );
+}
+
+export function FileTriggerSubmit({
+  name,
+  ...fileTriggerProps
+}: {
+  name: string;
+} & FileTriggerProps) {
+  const formContext = useFormContext();
+  const submit = useSubmit(formContext);
+  return (
+    <FileTrigger
+      onSelect={(e) => {
+        const files = e ? Array.from(e) : [];
+        const file = files[0];
+        if (!file) return;
+
+        const formData = new FormData(
+          formContext.formRef?.current ?? undefined
+        );
+        formData.set(name, file);
+
+        submit(formData);
+      }}
+      {...fileTriggerProps}
+    />
   );
 }
 
