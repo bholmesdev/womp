@@ -14,8 +14,10 @@ const Board = defineCollection({
 const Sound = defineCollection({
   fields: {
     boardId: field.text(),
-    name: field.text(),
-    audioUrl: field.text(),
+    emoji: field.text(),
+    name: field.text({ optional: true }),
+    audioFileKey: field.text({ unique: true }),
+    audioFileName: field.text(),
   },
 });
 

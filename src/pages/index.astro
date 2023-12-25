@@ -1,17 +1,68 @@
 ---
+import {
+  newSound,
+  editSound,
+  NewSoundDropZone,
+  EditCard,
+} from "../components/Boards";
 import { ViewTransitions } from "astro:transitions";
-import { SoundForm, sound } from "../components/SoundForm.tsx";
+import { db, eq, Sound } from "astro:db";
+import { safeId } from "../utils";
 
 const { R2 } = Astro.locals.runtime.env;
-const soundRequest = await Astro.locals.form.getData(sound);
+const newSoundReq = await Astro.locals.form.getDataByName(
+  "new-sound",
+  newSound
+);
 
-let key: string | undefined;
-if (soundRequest?.data) {
-  const { audioFile } = soundRequest.data;
+const editSoundReq = await Astro.locals.form.getDataByName(
+  "edit-sound",
+  editSound
+);
 
-  await R2.put(audioFile.name, await audioFile.arrayBuffer());
-  key = audioFile.name;
+if (editSoundReq?.data) {
+  const { id, audioFile } = editSoundReq.data;
+  const entry = await db
+    .select({ key: Sound.audioFileKey })
+    .from(Sound)
+    .where(eq(Sound.id, id))
+    .get();
+  if (!entry) {
+    Astro.response.status = 404;
+    Astro.response.statusText = `Sound ${id} not found`;
+  } else {
+    await R2.put(entry.key, await audioFile.arrayBuffer());
+    await db
+      .update(Sound)
+      .set({
+        audioFileName: audioFile.name,
+      })
+      .where(eq(Sound.id, id));
+  }
 }
+
+if (newSoundReq?.data) {
+  const { audioFile } = newSoundReq.data;
+  const key = `${safeId()}-${audioFile.name}`;
+
+  await R2.put(key, await audioFile.arrayBuffer());
+
+  await db.insert(Sound).values({
+    boardId: "TODO-board-id",
+    emoji: "TODO-random-emoji",
+    audioFileName: audioFile.name,
+    audioFileKey: key,
+  });
+}
+
+const sounds = await db
+  .select({
+    id: Sound.id,
+    emoji: Sound.emoji,
+    audioFileName: Sound.audioFileName,
+    audioFileKey: Sound.audioFileKey,
+  })
+  .from(Sound);
 ---
 
 <html lang="en">
@@ -23,15 +74,20 @@ if (soundRequest?.data) {
     <ViewTransitions />
     <title>Astro</title>
   </head>
-  <body>
+  <body class="dark:bg-gray-950 dark:text-white">
     <h1>WOMP</h1>
-    <SoundForm client:load />
-    {
-      key && (
-        <audio controls>
-          <source src={`/audio/${key}`} type="audio/mpeg" />
-        </audio>
-      )
-    }
+    <div class="max-w-screen-lg m-auto grid md:grid-cols-3 grid-cols-1 gap-3">
+      {
+        sounds.map((s) => (
+          <EditCard
+            client:load
+            id={s.id}
+            audioFileKey={s.audioFileKey}
+            audioFileName={s.audioFileName}
+          />
+        ))
+      }
+    </div>
+    <NewSoundDropZone client:load />
   </body>
 </html>

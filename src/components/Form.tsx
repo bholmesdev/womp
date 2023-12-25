@@ -8,7 +8,11 @@ import {
   useState,
   useRef,
 } from "react";
-import { DropZone, type FileDropItem } from "react-aria-components";
+import {
+  DropZone,
+  type DropZoneProps,
+  type FileDropItem,
+} from "react-aria-components";
 import {
   type FieldErrors,
   type FormState,
@@ -99,22 +103,19 @@ export function Form({
   );
 }
 
-export function FileDropInput(
-  inputProps: ComponentProps<"input"> & { name: string }
-) {
-  const [file, setFile] = useState<string | null>(null);
+export function FileDropInput(props: DropZoneProps & { name: string }) {
   const formContext = useFormContext();
   const { formRef, validator } = formContext;
-  const fieldState = formContext.value.fields[inputProps.name];
+  const fieldState = formContext.value.fields[props.name];
   if (!fieldState) {
     throw new Error(
-      `Input "${inputProps.name}" not found in form. Did you use the <Form> component?`
+      `Input "${props.name}" not found in form. Did you use the <Form> component?`
     );
   }
 
   return (
     <DropZone
-      className="border rounded border-purple-300 p-4"
+      {...props}
       getDropOperation={(types) =>
         types.has("audio/mpeg") ? "copy" : "cancel"
       }
@@ -123,13 +124,12 @@ export function FileDropInput(
           | FileDropItem
           | undefined;
         if (!fileDropItem) return;
-        setFile(fileDropItem.name);
 
         if (!formRef?.current) return;
 
         const formData = new FormData(formRef.current);
         const file = await fileDropItem.getFile();
-        formData.set(inputProps.name, file);
+        formData.set(props.name, file);
 
         formContext.set((formState) => ({
           ...formState,
@@ -143,9 +143,7 @@ export function FileDropInput(
         }
         formContext.setValidationErrors(parsed.fieldErrors);
       }}
-    >
-      <p slot="label">{file || "Drop files here"}</p>
-    </DropZone>
+    />
   );
 }
 
