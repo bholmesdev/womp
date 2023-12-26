@@ -23,7 +23,7 @@ const audioFileValidator = z
   .refine((file) => file.type.startsWith("audio/"));
 
 export const newSound = createForm({
-  audioFile: audioFileValidator,
+  audioFiles: z.array(audioFileValidator),
 });
 
 export const editEmoji = createForm({
@@ -66,7 +66,8 @@ export function NewSoundDropZone() {
       style={{ viewTransitionName: "new-sound" }}
     >
       <FileDropSubmit
-        name="audioFile"
+        name="audioFiles"
+        allowMultiple
         className="dark:text-gray-600 py-4 inset-0 data-[drop-target]:dark:bg-gray-900 transition-all data-[drop-target]:scale-105 data-[drop-target]:text-white grid place-items-center rounded-md border dark:border-gray-800 border-dashed gap-3"
       >
         <span className="flex flex-col items-center gap-3">

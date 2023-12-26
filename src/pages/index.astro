@@ -73,20 +73,23 @@ if (editFileReq?.data) {
 }
 
 if (newSoundReq?.data) {
-  const { audioFile } = newSoundReq.data;
-  const key = `${safeId()}-${audioFile.name}`;
+  const { audioFiles } = newSoundReq.data;
 
-  await R2.put(key, await audioFile.arrayBuffer());
+  for (const audioFile of audioFiles) {
+    const key = `${safeId()}-${audioFile.name}`;
 
-  const emojis = Object.values(data.emojis);
-  const randomIdx = Math.floor(Math.random() * emojis.length);
+    await R2.put(key, await audioFile.arrayBuffer());
 
-  await db.insert(Sound).values({
-    boardId: "TODO-board-id",
-    emojiId: emojis[randomIdx]!.id,
-    audioFileName: audioFile.name,
-    audioFileKey: key,
-  });
+    const emojis = Object.values(data.emojis);
+    const randomIdx = Math.floor(Math.random() * emojis.length);
+
+    await db.insert(Sound).values({
+      boardId: "TODO-board-id",
+      emojiId: emojis[randomIdx]!.id,
+      audioFileName: audioFile.name,
+      audioFileKey: key,
+    });
+  }
 }
 
 const sounds = await db

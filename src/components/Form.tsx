@@ -80,8 +80,6 @@ export function useSubmit(formContext: FormContextType) {
       return formContext.trackAstroSubmitStatus();
     }
 
-    console.log("file", formData.get("test"), parsed.fieldErrors);
-
     formContext.setValidationErrors(parsed.fieldErrors);
   };
 
@@ -122,9 +120,11 @@ export function Form({
 
 export function FileDropSubmit({
   name,
+  allowMultiple,
   ...dropZoneProps
 }: DropZoneProps & {
   name: string;
+  allowMultiple?: boolean;
 }) {
   const formContext = useFormContext();
   const submit = useSubmit(formContext);
@@ -141,16 +141,21 @@ export function FileDropSubmit({
         types.has("audio/mpeg") ? "copy" : "cancel"
       }
       onDrop={async (e) => {
-        const fileDropItem = e.items.find((file) => file.kind === "file") as
-          | FileDropItem
-          | undefined;
-        if (!fileDropItem) return;
-        const file = await fileDropItem.getFile();
+        const items = e.items.filter((file) => file.kind === "file") as
+          | FileDropItem[];
 
         const formData = new FormData(
           formContext.formRef?.current ?? undefined
         );
-        formData.set(name, file);
+
+        if (allowMultiple) {
+          for (const item of items) {
+            formData.append(name, await item.getFile());
+          }
+        } else {
+          const file = await items[0]?.getFile();
+          file && formData.set(name, file);
+        }
 
         submit(formData);
       }}
