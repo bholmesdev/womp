@@ -111,7 +111,9 @@ const sounds = await db
   </head>
   <body class="dark:bg-gray-950 dark:text-white min-h-screen flex flex-col">
     <h1>WOMP</h1>
-    <div class="px-3 max-w-screen-lg grid sm:grid-cols-3 grid-cols-2 gap-3">
+    <div
+      class="px-3 max-w-screen-md m-auto grid sm:grid-cols-3 grid-cols-2 gap-3"
+    >
       {
         sounds.map((s) => (
           <EditCard

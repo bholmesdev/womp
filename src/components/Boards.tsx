@@ -67,7 +67,7 @@ export function NewSoundDropZone() {
     >
       <FileDropSubmit
         name="audioFile"
-        className="dark:text-gray-600 py-6 inset-0 data-[drop-target]:dark:bg-gray-900 transition-all data-[drop-target]:scale-105 data-[drop-target]:text-white grid place-items-center rounded-md border dark:border-gray-800 border-dashed gap-3"
+        className="dark:text-gray-600 py-4 inset-0 data-[drop-target]:dark:bg-gray-900 transition-all data-[drop-target]:scale-105 data-[drop-target]:text-white grid place-items-center rounded-md border dark:border-gray-800 border-dashed gap-3"
       >
         <span className="flex flex-col items-center gap-3">
           <DocumentArrowDown />
@@ -112,8 +112,6 @@ function EmojiDropdown(selection: EmojiSelection) {
         <EmojiPicker
           data={data}
           onEmojiSelect={(s: EmojiSelection) => {
-            console.log(s);
-
             const formData = new FormData(
               formContext.formRef?.current ?? undefined
             );
