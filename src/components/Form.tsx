@@ -120,11 +120,11 @@ export function Form({
 
 export function FileDropSubmit({
   name,
-  allowMultiple,
+  allowsMultiple,
   ...dropZoneProps
 }: DropZoneProps & {
   name: string;
-  allowMultiple?: boolean;
+  allowsMultiple?: boolean;
 }) {
   const formContext = useFormContext();
   const submit = useSubmit(formContext);
@@ -148,7 +148,7 @@ export function FileDropSubmit({
           formContext.formRef?.current ?? undefined
         );
 
-        if (allowMultiple) {
+        if (allowsMultiple) {
           for (const item of items) {
             formData.append(name, await item.getFile());
           }
@@ -176,13 +176,19 @@ export function FileTriggerSubmit({
     <FileTrigger
       onSelect={(e) => {
         const files = e ? Array.from(e) : [];
-        const file = files[0];
-        if (!file) return;
-
         const formData = new FormData(
           formContext.formRef?.current ?? undefined
         );
-        formData.set(name, file);
+
+        if (fileTriggerProps.allowsMultiple) {
+          for (const file of files) {
+            console.log(file);
+            formData.append(name, file);
+          }
+        } else {
+          const file = files[0];
+          file && formData.set(name, file);
+        }
 
         submit(formData);
       }}

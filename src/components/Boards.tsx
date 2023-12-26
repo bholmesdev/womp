@@ -67,13 +67,13 @@ export function NewSoundDropZone() {
     >
       <FileDropSubmit
         name="audioFiles"
-        allowMultiple
-        className="dark:text-gray-600 py-4 inset-0 data-[drop-target]:dark:bg-gray-900 transition-all data-[drop-target]:scale-105 data-[drop-target]:text-white grid place-items-center rounded-md border dark:border-gray-800 border-dashed gap-3"
+        allowsMultiple
+        className="dark:text-gray-600 py-8 inset-0 data-[drop-target]:dark:bg-gray-900 transition-all data-[drop-target]:scale-105 data-[drop-target]:text-white grid place-items-center rounded-md border dark:border-gray-800 border-dashed gap-3"
       >
         <span className="flex flex-col items-center gap-3">
           <DocumentArrowDown />
           Drag sounds here
-          <FileTriggerSubmit name="audioFile">
+          <FileTriggerSubmit name="audioFiles" allowsMultiple>
             <Button className="dark:text-gray-200 dark:bg-gray-800 rounded py-2 px-4">
               Select files
             </Button>
