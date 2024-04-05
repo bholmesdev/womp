@@ -17,5 +17,8 @@ export default defineConfig({
   integrations: [tailwind(), simpleStackForm(), react(), db()],
   vite: {
     plugins: [simpleScope()],
+    optimizeDeps: {
+      exclude: ["astro:db", "oslo"],
+    },
   },
 });
