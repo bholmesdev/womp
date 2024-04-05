@@ -84,7 +84,6 @@ if (newSoundReq?.data) {
     const randomIdx = Math.floor(Math.random() * emojis.length);
 
     await db.insert(Sound).values({
-      boardId: "TODO-board-id",
       emojiId: emojis[randomIdx]!.id,
       audioFileName: audioFile.name,
       audioFileKey: key,

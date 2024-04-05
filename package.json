@@ -3,36 +3,37 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "studio link && astro check && astro build",
-    "preview": "astro preview",
+    "dev": "wrangler types && astro dev",
+    "start": "wrangler types && astro dev",
+    "build": "wrangler types && astro check && astro build",
+    "preview": "wrangler types && astro preview",
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/check": "^0.3.4",
-    "@astrojs/cloudflare": "^8.0.0",
-    "@astrojs/react": "^3.0.8",
-    "@astrojs/tailwind": "^5.0.4",
+    "@astrojs/check": "^0.5.10",
+    "@astrojs/cloudflare": "^10.0.2",
+    "@astrojs/db": "^0.10.1",
+    "@astrojs/react": "^3.1.1",
+    "@astrojs/tailwind": "^5.1.0",
     "@emoji-mart/data": "^1.1.2",
     "@emoji-mart/react": "^1.1.1",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
-    "astro": "^4.0.7",
+    "astro": "^4.5.16",
     "emoji-mart": "^5.5.2",
     "nanoid": "^5.0.4",
     "react": "^18.2.0",
     "react-aria-components": "^1.0.0",
     "react-dom": "^18.2.0",
     "simple-stack-form": "^0.1.5",
-    "studio-private-beta": "npm:leaf-simplest-round-ride@^0.1.3",
     "tailwind-merge": "^2.2.0",
     "tailwindcss": "^3.4.0",
     "typescript": "^5.3.3",
     "vite-plugin-simple-scope": "^1.0.3",
+    "wrangler": "^3.47.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20231218.0"
+    "@cloudflare/workers-types": "^4.20240404.0"
   }
 }

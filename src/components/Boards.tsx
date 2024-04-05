@@ -27,13 +27,13 @@ export const newSound = createForm({
 });
 
 export const editEmoji = createForm({
-  id: z.string(),
+  id: z.number(),
   emojiId: z.string(),
   emojiSkin: z.number().optional(),
 });
 
 export const editFile = createForm({
-  id: z.string(),
+  id: z.number(),
   audioFile: audioFileValidator,
 });
 
@@ -156,7 +156,7 @@ export function EditCard({
   audioFileKey,
   audioFileName,
 }: {
-  id: string;
+  id: number;
   emojiId: string;
   emojiSkin: number | undefined;
   audioFileKey: string;
