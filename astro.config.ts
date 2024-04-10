@@ -6,19 +6,21 @@ import simpleScope from "vite-plugin-simple-scope";
 import { defineConfig } from "astro/config";
 import db from "@astrojs/db";
 
+import icon from "astro-icon";
+
 // https://astro.build/config
 export default defineConfig({
   output: "server",
   adapter: cloudflare({
     platformProxy: {
-      enabled: true,
-    },
+      enabled: true
+    }
   }),
-  integrations: [tailwind(), simpleStackForm(), react(), db()],
+  integrations: [tailwind(), simpleStackForm(), react(), db(), icon()],
   vite: {
     plugins: [simpleScope()],
     optimizeDeps: {
-      exclude: ["astro:db", "oslo"],
-    },
-  },
+      exclude: ["astro:db", "oslo"]
+    }
+  }
 });

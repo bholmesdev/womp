@@ -21,6 +21,7 @@
     "@types/react-dom": "^18.2.18",
     "arctic": "^1.5.0",
     "astro": "^4.5.16",
+    "astro-icon": "^1.1.0",
     "emoji-mart": "^5.5.2",
     "lucia": "^3.1.1",
     "lucia-adapter-astrodb": "^0.0.7",
