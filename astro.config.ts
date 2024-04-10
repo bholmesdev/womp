@@ -2,7 +2,6 @@ import cloudflare from "@astrojs/cloudflare";
 import tailwind from "@astrojs/tailwind";
 import simpleStackForm from "simple-stack-form";
 import react from "@astrojs/react";
-import simpleScope from "vite-plugin-simple-scope";
 import { defineConfig } from "astro/config";
 import db from "@astrojs/db";
 
@@ -13,14 +12,13 @@ export default defineConfig({
   output: "server",
   adapter: cloudflare({
     platformProxy: {
-      enabled: true
-    }
+      enabled: true,
+    },
   }),
   integrations: [tailwind(), simpleStackForm(), react(), db(), icon()],
   vite: {
-    plugins: [simpleScope()],
     optimizeDeps: {
-      exclude: ["astro:db", "oslo"]
-    }
-  }
+      exclude: ["astro:db", "oslo"],
+    },
+  },
 });

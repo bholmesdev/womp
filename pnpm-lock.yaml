@@ -77,9 +77,6 @@ dependencies:
   typescript:
     specifier: ^5.3.3
     version: 5.3.3
-  vite-plugin-simple-scope:
-    specifier: ^1.0.3
-    version: 1.0.3
   wrangler:
     specifier: ^3.47.1
     version: 3.47.1(@cloudflare/workers-types@4.20240404.0)
@@ -7994,13 +7991,6 @@ packages:
       '@types/unist': 3.0.2
       unist-util-stringify-position: 4.0.0
       vfile-message: 4.0.2
-    dev: false
-
-  /vite-plugin-simple-scope@1.0.3:
-    resolution: {integrity: sha512-ZKs0Me9GohASaYL7pGEj4L6d2ebbfhr94HYZamEBZTGPwqc87wURNbK29uBnSf2fboLXd5MNAwqEQOyVil9GpQ==}
-    engines: {node: '>=18.14.1'}
-    dependencies:
-      nanoid: 5.0.4
     dev: false
 
   /vite@5.2.8:
