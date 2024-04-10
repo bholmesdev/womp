@@ -68,6 +68,7 @@ export async function GET(context: APIContext): Promise<Response> {
     );
     return context.redirect("/");
   } catch (e) {
+    console.error("Auth error:", e);
     // the specific error message depends on the provider
     if (e instanceof OAuth2RequestError) {
       // invalid code
