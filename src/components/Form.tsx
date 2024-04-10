@@ -182,7 +182,6 @@ export function FileTriggerSubmit({
 
         if (fileTriggerProps.allowsMultiple) {
           for (const file of files) {
-            console.log(file);
             formData.append(name, file);
           }
         } else {

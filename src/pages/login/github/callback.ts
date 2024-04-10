@@ -21,7 +21,6 @@ export async function GET(context: APIContext): Promise<Response> {
     const tokens = await github(
       context.locals.runtime.env
     ).validateAuthorizationCode(code);
-    console.log("github token::", tokens);
     const githubUserResponse = await fetch("https://api.github.com/user", {
       headers: {
         Authorization: `Bearer ${tokens.accessToken}`,
@@ -30,7 +29,6 @@ export async function GET(context: APIContext): Promise<Response> {
           : "astro-womp-dev",
       },
     });
-    console.log("response::", await githubUserResponse.clone().text());
     const githubUser: GitHubUser = await githubUserResponse.json();
 
     // Replace this with your own DB client.
