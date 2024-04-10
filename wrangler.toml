@@ -1,5 +1,6 @@
 name = "womp"
 pages_build_output_dir = "./dist"
+streams_enable_constructors = true
 
 [[r2_buckets]]
 binding = 'R2'
