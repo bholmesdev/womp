@@ -1,6 +1,7 @@
 name = "womp"
 pages_build_output_dir = "./dist"
-streams_enable_constructors = true
+compatibility_date = "2024-04-08"
+compatibility_flags = [ "streams_enable_constructors" ]
 
 [[r2_buckets]]
 binding = 'R2'
