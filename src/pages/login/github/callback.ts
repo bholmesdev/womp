@@ -5,6 +5,8 @@ import { generateId } from "lucia";
 import { db, User, eq, Board } from "astro:db";
 import type { APIContext } from "astro";
 
+export const prerender = false;
+
 export async function GET(context: APIContext): Promise<Response> {
   const code = context.url.searchParams.get("code");
   const state = context.url.searchParams.get("state");

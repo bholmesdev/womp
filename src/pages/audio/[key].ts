@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
-// import { Headers, Response } from "@cloudflare/workers-types";
+
+export const prerender = false;
 
 export const GET: APIRoute = async (ctx) => {
   const { key } = ctx.params;

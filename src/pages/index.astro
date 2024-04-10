@@ -12,6 +12,8 @@ import { safeId } from "../utils";
 import untypedData, { type EmojiMartData } from "@emoji-mart/data";
 import { Board } from "astro:db";
 
+export const prerender = false;
+
 const user = Astro.locals.user;
 if (!user) {
   return Astro.redirect("/login");
