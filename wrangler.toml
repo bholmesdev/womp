@@ -1,5 +1,7 @@
 name = "womp"
 
+compatibility_flags = [ "nodejs_compat" ]
+
 [[r2_buckets]]
 binding = 'R2'
 bucket_name = 'womp-audio'
