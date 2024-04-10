@@ -4,7 +4,12 @@
 /// <reference types="simple-stack-form/types" />
 /// <reference types="vite-plugin-simple-scope/types" />
 
-type Runtime = import("@astrojs/cloudflare").Runtime<Env>;
+interface CfEnv extends Env {
+  GITHUB_ID: string;
+  GITHUB_SECRET: string;
+}
+
+type Runtime = import("@astrojs/cloudflare").Runtime<CfEnv>;
 
 declare namespace App {
   interface Locals extends Runtime {
