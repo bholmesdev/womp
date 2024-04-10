@@ -7,8 +7,8 @@ import { GitHub } from "arctic";
 console.log(Object.keys(import.meta.env));
 
 export const github = new GitHub(
-  import.meta.env.GITHUB_CLIENT_ID,
-  import.meta.env.GITHUB_CLIENT_SECRET
+  import.meta.env.GITHUB_ID,
+  import.meta.env.GITHUB_SECRET
 );
 
 const adapter = new AstroDBAdapter(db, Session, User);

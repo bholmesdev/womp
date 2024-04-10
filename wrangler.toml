@@ -6,6 +6,3 @@ compatibility_date = "2024-04-08"
 [[r2_buckets]]
 binding = 'R2'
 bucket_name = 'womp-audio'
-
-[[vars]]
-GITHUB_CLIENT_ID = '15ef965359f8dbae1b30'
