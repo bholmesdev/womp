@@ -25,6 +25,9 @@ export async function GET(context: APIContext): Promise<Response> {
     const githubUserResponse = await fetch("https://api.github.com/user", {
       headers: {
         Authorization: `Bearer ${tokens.accessToken}`,
+        "User-Agent": import.meta.env.PROD
+          ? "astro-womp-prod"
+          : "astro-womp-dev",
       },
     });
     console.log("response::", await githubUserResponse.clone().text());
