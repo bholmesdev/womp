@@ -1,7 +1,19 @@
-<!-- pages/login/index.astro -->
-<html lang="en">
-  <body>
-    <h1>Sign in</h1>
-    <a href="/login/github">Sign in with GitHub</a>
-  </body>
-</html>
+---
+import Layout from "../../layouts/Layout.astro";
+import { Icon } from "astro-icon/components";
+---
+
+<Layout title="Login | WOMP">
+  <main class="w-full h-96 max-h-screen mx-auto grid place-items-center pt-4">
+    <div class="flex flex-col items-center gap-6">
+      <Icon name="logo" size={144} class="my-[-3em]" />
+      <p>The Soundboard builder for the <strong>edge.</strong></p>
+      <a
+        class="bg-gray-200 dark:bg-white dark:text-gray-950 rounded px-4 py-3 transition-colors hover:bg-gray-300 dark:hover:bg-gray-200 flex gap-2 items-center justify-center"
+        href="/login/github"
+        >Sign in with GitHub
+        <Icon name="github" />
+      </a>
+    </div>
+  </main>
+</Layout>
