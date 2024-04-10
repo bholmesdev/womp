@@ -5,6 +5,8 @@ const User = defineTable({
     id: column.text({
       primaryKey: true,
     }),
+    github_id: column.text({ unique: true }),
+    username: column.text(),
   },
 });
 
@@ -23,9 +25,9 @@ const Session = defineTable({
 const Sound = defineTable({
   columns: {
     id: column.number({ primaryKey: true }),
-    // boardId: column.number({
-    //   references: () => Board.columns.id,
-    // }),
+    boardId: column.number({
+      references: () => Board.columns.id,
+    }),
     emojiId: column.text(),
     emojiSkin: column.number({
       optional: true,
@@ -43,6 +45,9 @@ const Sound = defineTable({
 const Board = defineTable({
   columns: {
     id: column.number({ primaryKey: true }),
+    userId: column.text({
+      references: () => User.columns.id,
+    }),
     name: column.text(),
   },
 });

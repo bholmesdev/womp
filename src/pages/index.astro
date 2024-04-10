@@ -10,6 +10,29 @@ import { ViewTransitions } from "astro:transitions";
 import { db, eq, Sound } from "astro:db";
 import { safeId } from "../utils";
 import untypedData, { type EmojiMartData } from "@emoji-mart/data";
+import { Board } from "astro:db";
+
+const user = Astro.locals.user;
+if (!user) {
+  return Astro.redirect("/login");
+}
+
+let board = await db
+  .select({ id: Board.id })
+  .from(Board)
+  .where(eq(Board.userId, user.id))
+  .get();
+
+if (!board) {
+  board = await db
+    .insert(Board)
+    .values({
+      name: user.username,
+      userId: user.id,
+    })
+    .returning({ id: Board.id })
+    .get();
+}
 
 const data = untypedData as EmojiMartData;
 
@@ -84,6 +107,7 @@ if (newSoundReq?.data) {
     const randomIdx = Math.floor(Math.random() * emojis.length);
 
     await db.insert(Sound).values({
+      boardId: board.id,
       emojiId: emojis[randomIdx]!.id,
       audioFileName: audioFile.name,
       audioFileKey: key,
