@@ -4,10 +4,8 @@ import { AstroDBAdapter } from "lucia-adapter-astrodb";
 import { db, Session, User } from "astro:db";
 import { GitHub } from "arctic";
 
-export const github = new GitHub(
-  import.meta.env.GITHUB_CLIENT_ID,
-  import.meta.env.GITHUB_CLIENT_SECRET
-);
+export const github = (env: any) =>
+  new GitHub(env.GITHUB_CLIENT_ID, env.GITHUB_CLIENT_SECRET);
 
 const adapter = new AstroDBAdapter(db, Session, User);
 
