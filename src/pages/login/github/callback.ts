@@ -27,6 +27,7 @@ export async function GET(context: APIContext): Promise<Response> {
         Authorization: `Bearer ${tokens.accessToken}`,
       },
     });
+    console.log("response::", await githubUserResponse.clone().text());
     const githubUser: GitHubUser = await githubUserResponse.json();
 
     // Replace this with your own DB client.
