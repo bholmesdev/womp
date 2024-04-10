@@ -2,7 +2,7 @@ import type { APIRoute } from "astro";
 
 export const prerender = false;
 
-export const GET: APIRoute = async (ctx) => {
+export const GET: APIRoute = async () => {
   // const { key } = ctx.params;
   // if (!key) return new Response(null, { status: 400 });
 
