@@ -9,6 +9,7 @@ export const prerender = false;
 export async function GET(context: APIContext): Promise<Response> {
   const state = generateState();
   const url = await github.createAuthorizationURL(state);
+  console.log(url, import.meta.env.GITHUB_ID);
 
   context.cookies.set("github_oauth_state", state, {
     path: "/",
