@@ -4,11 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-patchedDependencies:
-  '@astrojs/db@0.10.1':
-    hash: uv2hr5kfiqquu24bppsuzhwe4y
-    path: patches/@astrojs__db@0.10.1.patch
-
 dependencies:
   '@astrojs/check':
     specifier: ^0.5.10
@@ -18,7 +13,7 @@ dependencies:
     version: 10.0.2(astro@4.5.16)
   '@astrojs/db':
     specifier: ^0.10.1
-    version: 0.10.1(patch_hash=uv2hr5kfiqquu24bppsuzhwe4y)(@cloudflare/workers-types@4.20240404.0)(@types/react@18.2.45)(react@18.2.0)
+    version: 0.10.1(@cloudflare/workers-types@4.20240404.0)(@types/react@18.2.45)(react@18.2.0)
   '@astrojs/react':
     specifier: ^3.1.1
     version: 3.1.1(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0)(react@18.2.0)(vite@5.2.8)
@@ -160,7 +155,7 @@ packages:
     resolution: {integrity: sha512-/POejAYuj8WEw7ZI0J8JBvevjfp9jQ9Wmu/Bg52RiNwGXkMV7JnYpsenVfHvvf1G7R5sXHGKlTcxlQWhoUTiGQ==}
     dev: false
 
-  /@astrojs/db@0.10.1(patch_hash=uv2hr5kfiqquu24bppsuzhwe4y)(@cloudflare/workers-types@4.20240404.0)(@types/react@18.2.45)(react@18.2.0):
+  /@astrojs/db@0.10.1(@cloudflare/workers-types@4.20240404.0)(@types/react@18.2.45)(react@18.2.0):
     resolution: {integrity: sha512-nNbatQVereDW4VopFXUS2hJ2fatRLzxJZ03XaafbI81RG0JVOkisJCjyOYXExuka9RXavZVkAQug5BpHhZzYLQ==}
     dependencies:
       '@libsql/client': 0.5.6
@@ -205,7 +200,6 @@ packages:
       - sqlite3
       - utf-8-validate
     dev: false
-    patched: true
 
   /@astrojs/internal-helpers@0.3.0:
     resolution: {integrity: sha512-tGmHvrhpzuz0JBHaJX8GywN9g4rldVNHtkoVDC3m/DdzBO70jGoVuc0uuNVglRYnsdwkbG0K02Iw3nOOR3/Y4g==}
@@ -5845,7 +5839,7 @@ packages:
       '@astrojs/db': 0.8 - 0.9
       lucia: 3.x
     dependencies:
-      '@astrojs/db': 0.10.1(patch_hash=uv2hr5kfiqquu24bppsuzhwe4y)(@cloudflare/workers-types@4.20240404.0)(@types/react@18.2.45)(react@18.2.0)
+      '@astrojs/db': 0.10.1(@cloudflare/workers-types@4.20240404.0)(@types/react@18.2.45)(react@18.2.0)
       lucia: 3.1.1
     dev: false
 
