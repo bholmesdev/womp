@@ -19,6 +19,7 @@
     "@emoji-mart/react": "^1.1.1",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
+    "arctic": "^1.5.0",
     "astro": "^4.5.16",
     "emoji-mart": "^5.5.2",
     "lucia": "^3.1.1",

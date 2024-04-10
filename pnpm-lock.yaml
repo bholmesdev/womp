@@ -32,6 +32,9 @@ dependencies:
   '@types/react-dom':
     specifier: ^18.2.18
     version: 18.2.18
+  arctic:
+    specifier: ^1.5.0
+    version: 1.5.0
   astro:
     specifier: ^4.5.16
     version: 4.5.16(typescript@5.3.3)
@@ -3999,6 +4002,12 @@ packages:
     dependencies:
       normalize-path: 3.0.0
       picomatch: 2.3.1
+    dev: false
+
+  /arctic@1.5.0:
+    resolution: {integrity: sha512-ZBC3a7yFncIkeoavrOFi+Jq+Qc4ENsl1JViCMjFe2VEv30XEEHyUsWOO8MHmPFsCyRXbboWSHf+OGpc3WyR67A==}
+    dependencies:
+      oslo: 1.2.0
     dev: false
 
   /arg@5.0.2:
