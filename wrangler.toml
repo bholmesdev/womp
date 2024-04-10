@@ -1,5 +1,7 @@
 name = "womp"
 pages_build_output_dir = "./dist"
+compatibility_date = "2024-04-08"
+compatibility_flags = ["nodejs_compat"]
 
 [[r2_buckets]]
 binding = 'R2'

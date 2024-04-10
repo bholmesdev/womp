@@ -9,8 +9,8 @@ dependencies:
     specifier: ^0.5.10
     version: 0.5.10(typescript@5.3.3)
   '@astrojs/cloudflare':
-    specifier: 0.0.0-cf-deps-chunk-20240408123317
-    version: 0.0.0-cf-deps-chunk-20240408123317(astro@4.5.16)
+    specifier: ^10.0.2
+    version: 10.0.2(astro@4.5.16)
   '@astrojs/db':
     specifier: ^0.10.1
     version: 0.10.1(@cloudflare/workers-types@4.20240404.0)(@types/react@18.2.45)(react@18.2.0)
@@ -132,8 +132,8 @@ packages:
       - prettier-plugin-astro
     dev: false
 
-  /@astrojs/cloudflare@0.0.0-cf-deps-chunk-20240408123317(astro@4.5.16):
-    resolution: {integrity: sha512-GX5IXVTwFXf13JS50pFXOrK6iRu7VgdrhFnTVHOSgClS+nm/3CY1E4xQG4AFDioqfJzsRMuxXnkzwJ+7bDhwRw==}
+  /@astrojs/cloudflare@10.0.2(astro@4.5.16):
+    resolution: {integrity: sha512-csRatKPw8B/sL5Xz+UZ8Eh5WahSiSQbRNUQx4tYrZaEjUCV0BA14uYaV0rZyTAe62fZlFOqHbpfq0AeZRQWj/w==}
     peerDependencies:
       astro: ^4.2.0
     dependencies:
