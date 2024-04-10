@@ -39,5 +39,10 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240404.0"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@astrojs/db@0.10.1": "patches/@astrojs__db@0.10.1.patch"
+    }
   }
 }
