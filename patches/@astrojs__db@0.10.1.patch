@@ -180,3 +180,106 @@ index 04a92da5e0120d5a7a5d72ab98d39e6cdd5ee12f..f41401936548312dc7e11917dac7f677
 -  vitePluginDb
 +  vitePluginDb,
  };
+diff --git a/dist/runtime/db-client.js b/dist/runtime/db-client.js
+index 1ee4d400aadafaee7388f107f3094f1da6377330..6a83d8945767da0887b03a2cfd3aa3f0cd0ea41d 100644
+--- a/dist/runtime/db-client.js
++++ b/dist/runtime/db-client.js
+@@ -10,7 +10,7 @@ function applyTransactionNotSupported(db) {
+       throw new Error(
+         "`db.transaction()` is not currently supported. We recommend `db.batch()` for automatic error rollbacks across multiple queries."
+       );
+-    }
++    },
+   });
+ }
+ function createLocalDatabaseClient({ dbUrl }) {
+@@ -25,9 +25,10 @@ const remoteResultSchema = z.object({
+   columnTypes: z.array(z.string()),
+   rows: z.array(z.array(z.unknown())),
+   rowsAffected: z.number(),
+-  lastInsertRowid: z.unknown().optional()
++  lastInsertRowid: z.unknown().optional(),
+ });
+ function createRemoteDatabaseClient(appToken, remoteDbURL) {
++  console.log("appToken", appToken, remoteDbURL);
+   if (appToken == null) {
+     throw new Error(`Cannot create a remote client: missing app token.`);
+   }
+@@ -41,9 +42,9 @@ function createRemoteDatabaseClient(appToken, remoteDbURL) {
+           method: "POST",
+           headers: {
+             Authorization: `Bearer ${appToken}`,
+-            "Content-Type": "application/json"
++            "Content-Type": "application/json",
+           },
+-          body: JSON.stringify(requestBody)
++          body: JSON.stringify(requestBody),
+         },
+         async (response) => {
+           throw await parseRemoteError(response);
+@@ -56,8 +57,7 @@ function createRemoteDatabaseClient(appToken, remoteDbURL) {
+       } catch (e) {
+         throw new AstroDbError(await getUnexpectedResponseMessage(res));
+       }
+-      if (method === "run")
+-        return remoteResult;
++      if (method === "run") return remoteResult;
+       const rowValues = [];
+       for (const row of remoteResult.rows) {
+         if (row != null && typeof row === "object") {
+@@ -77,9 +77,9 @@ function createRemoteDatabaseClient(appToken, remoteDbURL) {
+           method: "POST",
+           headers: {
+             Authorization: `Bearer ${appToken}`,
+-            "Content-Type": "application/json"
++            "Content-Type": "application/json",
+           },
+-          body: JSON.stringify(stmts)
++          body: JSON.stringify(stmts),
+         },
+         async (response) => {
+           throw await parseRemoteError(response);
+@@ -119,13 +119,15 @@ const errorSchema = z.object({
+   success: z.boolean(),
+   error: z.object({
+     code: z.string(),
+-    details: z.string().optional()
+-  })
++    details: z.string().optional(),
++  }),
+ });
+ const KNOWN_ERROR_CODES = {
+-  SQL_QUERY_FAILED: "SQL_QUERY_FAILED"
++  SQL_QUERY_FAILED: "SQL_QUERY_FAILED",
+ };
+-const getUnexpectedResponseMessage = async (response) => `Unexpected response from remote database:
++const getUnexpectedResponseMessage = async (
++  response
++) => `Unexpected response from remote database:
+ (Status ${response.status}) ${await response.text()}`;
+ async function parseRemoteError(response) {
+   let error;
+@@ -134,15 +136,17 @@ async function parseRemoteError(response) {
+   } catch (e) {
+     return new AstroDbError(await getUnexpectedResponseMessage(response));
+   }
+-  let details = error.details?.replace(/.*SQLite error: /, "") ?? `(Code ${error.code}) 
++  let details =
++    error.details?.replace(/.*SQLite error: /, "") ??
++    `(Code ${error.code}) 
+ Error querying remote database.`;
+   let hint = `See the Astro DB guide for query and push instructions: https://docs.astro.build/en/guides/astro-db/#query-your-database`;
+-  if (error.code === KNOWN_ERROR_CODES.SQL_QUERY_FAILED && details.includes("no such table")) {
++  if (
++    error.code === KNOWN_ERROR_CODES.SQL_QUERY_FAILED &&
++    details.includes("no such table")
++  ) {
+     hint = `Did you run \`astro db push\` to push your latest table schemas?`;
+   }
+   return new AstroDbError(details, hint);
+ }
+-export {
+-  createLocalDatabaseClient,
+-  createRemoteDatabaseClient
+-};
++export { createLocalDatabaseClient, createRemoteDatabaseClient };
