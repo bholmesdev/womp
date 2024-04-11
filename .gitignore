@@ -24,3 +24,5 @@ pnpm-debug.log*
 .wrangler/
 worker-configuration.d.ts
 .dev.vars
+.dev.vars.*
+!.dev.vars.example
