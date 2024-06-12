@@ -11,6 +11,7 @@ import { useRef, useState } from "react";
 import { Button, Popover } from "react-aria-components";
 import data, { type EmojiMartData } from "@emoji-mart/data";
 import EmojiPickerMod from "@emoji-mart/react";
+import { newSoundValidator } from "../actions";
 
 // I hate ESM...
 const EmojiPicker = import.meta.env.SSR
@@ -62,7 +63,7 @@ export function NewSoundDropZone() {
     <Form
       name="new-sound"
       className="grid place-items-stretch p-3"
-      validator={newSound.validator}
+      validator={newSoundValidator}
       style={{ viewTransitionName: "new-sound" }}
     >
       <FileDropSubmit

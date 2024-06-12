@@ -21,4 +21,7 @@ export default defineConfig({
       exclude: ["astro:db", "oslo"],
     },
   },
+  experimental: {
+    actions: true
+  }
 });
