@@ -1,11 +1,18 @@
 import { CO2, db, eq } from "astro:db";
 import { defineMiddleware } from "astro:middleware";
 
+// Source: memory-intensive load for c5 processor
+// https://medium.com/teads-engineering/estimating-aws-ec2-instances-power-consumption-c9745e347959
 const awsTotalMachineWatts = 174;
-const awsUtilization = 0.3;
+// Fudge factor since we're not using the full machine
+const awsUtilization = 0.1;
 const awskW = (awsTotalMachineWatts * awsUtilization) / 1000;
+// Source: cloud carbon footprint
+// https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/e48c659f6dafc8b783e570053024f28b88aafc79/microsite/docs/Methodology.md#aws-2
 const awsCO2_per_kWh = 0.000415755 * Math.pow(10, 6);
 
+// Source: global averages per Sustainable Web Design model
+// https://sustainablewebdesign.org/estimating-digital-emissions/#faq
 const userOperationalkWh_per_GB =
   (421 * Math.pow(10, 9)) / (5.29 * Math.pow(10, 12));
 const userEmbodiedCO2_per_GB =
