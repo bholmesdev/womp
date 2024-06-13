@@ -87,7 +87,12 @@ if (editFileReq?.data) {
     Astro.response.statusText = `Sound ${id} not found`;
   } else {
     const { key } = entry;
-    await R2.put(key, await audioFile.arrayBuffer());
+    const buffer = await audioFile.arrayBuffer();
+    const kb500 = 500 * 1024;
+    if (buffer.byteLength > kb500) {
+      return new Response("File too large", { status: 413 });
+    }
+    await R2.put(key, buffer);
     await db
       .update(Sound)
       .set({
@@ -103,7 +108,12 @@ if (newSoundReq?.data) {
   for (const audioFile of audioFiles) {
     const key = `${safeId()}-${audioFile.name}`;
 
-    await R2.put(key, await audioFile.arrayBuffer());
+    const buffer = await audioFile.arrayBuffer();
+    const kb500 = 500 * 1024;
+    if (buffer.byteLength > kb500) {
+      return new Response("File too large", { status: 413 });
+    }
+    await R2.put(key, buffer);
 
     const emojis = Object.values(data.emojis);
     const randomIdx = Math.floor(Math.random() * emojis.length);
