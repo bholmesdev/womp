@@ -26,25 +26,20 @@ export const co2 = defineMiddleware(async (context, next) => {
     await db.delete(CO2).where(eq(CO2.referer, referer));
   }
   if (!response.body) {
-    const time = performance.now() - start;
-    const hours = time / 1000 / 3600;
-    const serverkWh = hours * awskW;
-    const serverCO2 = serverkWh * awsCO2_per_kWh;
-
     await db
       .insert(CO2)
       .values({
         route: context.url.pathname,
         referer,
         client: 0,
-        server: serverCO2,
+        server: getServerCO2(start),
       })
       .onConflictDoUpdate({
         target: CO2.route,
         set: {
           referer,
           client: 0,
-          server: serverCO2,
+          server: getServerCO2(start),
         },
       });
     return response;
@@ -56,28 +51,20 @@ export const co2 = defineMiddleware(async (context, next) => {
       clientBytes += chunk.byteLength;
       yield chunk;
     }
-    const time = performance.now() - start;
-    const hours = time / 1000 / 3600;
-    const serverkWh = hours * awskW;
-    const serverCO2 = serverkWh * awsCO2_per_kWh;
-
-    const clientkWh = (clientBytes / Math.pow(10, 12)) * userCO2_per_GB;
-    const clientCO2 = clientkWh * awsCO2_per_kWh;
-
     await db
       .insert(CO2)
       .values({
         route: context.url.pathname,
         referer,
-        client: clientCO2,
-        server: serverCO2,
+        client: getClientCO2(clientBytes),
+        server: getServerCO2(start),
       })
       .onConflictDoUpdate({
         target: CO2.route,
         set: {
           referer,
-          client: clientCO2,
-          server: serverCO2,
+          client: getClientCO2(clientBytes),
+          server: getServerCO2(start),
         },
       });
   }
@@ -85,3 +72,17 @@ export const co2 = defineMiddleware(async (context, next) => {
   // @ts-expect-error generator not assignable to ReadableStream
   return new Response(render(), { headers: response.headers });
 });
+
+function getServerCO2(start: number) {
+  const time = performance.now() - start;
+  const hours = time / 1000 / 3600;
+  const serverkWh = hours * awskW;
+  const serverCO2 = serverkWh * awsCO2_per_kWh;
+  return serverCO2;
+}
+
+function getClientCO2(bytes: number) {
+  const clientkWh = (bytes / Math.pow(10, 12)) * userCO2_per_GB;
+  const clientCO2 = clientkWh * awsCO2_per_kWh;
+  return clientCO2;
+}
