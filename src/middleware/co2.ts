@@ -83,13 +83,13 @@ export const co2 = defineMiddleware(async (context, next) => {
 function getServerCO2(start: number) {
   const time = performance.now() - start;
   const hours = time / 1000 / 3600;
-  const serverkWh = hours * awskW;
-  const serverCO2 = serverkWh * awsCO2_per_kWh;
-  return serverCO2;
+  const kWh = hours * awskW;
+  const co2 = kWh * awsCO2_per_kWh;
+  return co2;
 }
 
 function getClientCO2(bytes: number) {
-  const clientkWh = (bytes / Math.pow(10, 12)) * userCO2_per_GB;
-  const clientCO2 = clientkWh * awsCO2_per_kWh;
-  return clientCO2;
+  const kWh = (bytes / Math.pow(10, 12)) * userCO2_per_GB;
+  const co2 = kWh * awsCO2_per_kWh;
+  return co2;
 }
