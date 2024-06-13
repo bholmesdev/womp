@@ -13,6 +13,8 @@ const userEmbodiedCO2_per_GB =
 const userCO2_per_GB = userOperationalkWh_per_GB + userEmbodiedCO2_per_GB;
 
 export const co2 = defineMiddleware(async (context, next) => {
+  if (context.url.pathname.endsWith("_actions/getCo2")) return next();
+
   const referer = context.request.headers.get("Referer");
   // If no referer, we don't have a key to track for co2 analytics
   if (!referer) return next();
