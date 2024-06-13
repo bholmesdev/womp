@@ -52,7 +52,16 @@ const Board = defineTable({
   },
 });
 
+const CO2 = defineTable({
+  columns: {
+    route: column.text({ primaryKey: true }),
+    referer: column.text(),
+    server: column.number(),
+    client: column.number(),
+  },
+});
+
 // https://astro.build/db/config
 export default defineDb({
-  tables: { Sound, Board, User, Session },
+  tables: { Sound, Board, User, Session, CO2 },
 });
