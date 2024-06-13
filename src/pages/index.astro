@@ -150,7 +150,7 @@ const sounds = await db
   <body class="dark:bg-gray-950 dark:text-white min-h-screen flex flex-col">
     <section>
       <h2>CO2 usage</h2>
-      <co2-usage class="flex max-w-[60ch]">
+      <co2-usage class="flex max-w-[100ch]">
         <div class="bg-blue-500 h-8 rounded transition-all" data-server></div>
         <div class="bg-green-300 h-8 rounded transition-all" data-client></div>
       </co2-usage>
@@ -200,7 +200,7 @@ const sounds = await db
                 { server: 0, client: 0 }
               );
               console.log(co2);
-              this.server.style.width = `${co2.server * Math.pow(10, 5)}%`;
+              this.server.style.width = `${co2.server * Math.pow(10, 6)}%`;
               this.client.style.width = `${co2.client * Math.pow(10, 6)}%`;
             }, 500);
           }
