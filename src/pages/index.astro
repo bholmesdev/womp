@@ -150,10 +150,10 @@ const sounds = await db
   <body class="dark:bg-gray-950 dark:text-white min-h-screen flex flex-col">
     <section>
       <h2>CO2 usage</h2>
-      <div class="flex max-w-[60ch]">
+      <co2-usage class="flex max-w-[60ch]">
         <div class="bg-blue-500 h-8 rounded transition-all" data-server></div>
         <div class="bg-green-300 h-8 rounded transition-all" data-client></div>
-      </div>
+      </co2-usage>
     </section>
     <div
       class="px-3 max-w-screen-md m-auto grid sm:grid-cols-3 grid-cols-2 gap-3"
@@ -179,26 +179,33 @@ const sounds = await db
     <script>
       import { actions } from "astro:actions";
 
-      const server = document.querySelector("[data-server]") as HTMLElement;
-      const client = document.querySelector("[data-client]") as HTMLElement;
+      window.customElements.define(
+        "co2-usage",
+        class extends HTMLElement {
+          server = this.querySelector("[data-server]") as HTMLElement;
+          client = this.querySelector("[data-client]") as HTMLElement;
 
-      setInterval(async () => {
-        const co2Entries = await actions.getCo2({
-          referer: window.location.href,
-        });
-        const co2 = co2Entries.reduce(
-          (acc: { server: number; client: number }, entry) => {
-            return {
-              server: acc.server + entry.server,
-              client: acc.client + entry.client,
-            };
-          },
-          { server: 0, client: 0 }
-        );
-        console.log(co2);
-        server.style.width = `${co2.server * Math.pow(10, 5)}%`;
-        client.style.width = `${co2.client * Math.pow(10, 6)}%`;
-      }, 500);
+          connectedCallback() {
+            setInterval(async () => {
+              const co2Entries = await actions.getCo2({
+                referer: window.location.href,
+              });
+              const co2 = co2Entries.reduce(
+                (acc: { server: number; client: number }, entry) => {
+                  return {
+                    server: acc.server + entry.server,
+                    client: acc.client + entry.client,
+                  };
+                },
+                { server: 0, client: 0 }
+              );
+              console.log(co2);
+              this.server.style.width = `${co2.server * Math.pow(10, 5)}%`;
+              this.client.style.width = `${co2.client * Math.pow(10, 6)}%`;
+            }, 500);
+          }
+        }
+      );
     </script>
   </body>
 </html>
