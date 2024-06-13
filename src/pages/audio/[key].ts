@@ -16,5 +16,7 @@ export const GET: APIRoute = async (ctx) => {
   const headers = new Headers(Object.entries(obj.httpMetadata ?? {}));
   headers.set("etag", obj.httpEtag);
 
-  return new Response(obj.body);
+  headers.set("Cache-Control", "public, max-age=31536000, immutable");
+
+  return new Response(obj.body, { headers });
 };

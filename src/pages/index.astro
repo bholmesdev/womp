@@ -172,25 +172,21 @@ const sounds = await db
       const server = document.querySelector("[data-server]") as HTMLElement;
       const client = document.querySelector("[data-client]") as HTMLElement;
 
-      type Metric = { server: number; client: number };
-
       setInterval(async () => {
         const co2Entries = await actions.getCo2({
           referer: window.location.href,
         });
         const co2 = co2Entries.reduce(
-          (acc: Metric, metric: Metric) => {
-            console.log(acc, metric);
-            console.log(metric.route);
+          (acc: { server: number; client: number }, entry) => {
             return {
-              server: acc.server + metric.server,
-              client: acc.client + metric.client,
+              server: acc.server + entry.server,
+              client: acc.client + entry.client,
             };
           },
           { server: 0, client: 0 }
         );
         console.log(co2);
-        server.style.width = `${co2.server * Math.pow(10, 6)}%`;
+        server.style.width = `${co2.server * Math.pow(10, 5)}%`;
         client.style.width = `${co2.client * Math.pow(10, 6)}%`;
       }, 500);
     </script>
