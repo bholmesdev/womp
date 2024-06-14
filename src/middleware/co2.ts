@@ -9,15 +9,16 @@ const awsUtilization = 0.1;
 const awskW = (awsTotalMachineWatts * awsUtilization) / 1000;
 // Source: cloud carbon footprint
 // https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/e48c659f6dafc8b783e570053024f28b88aafc79/microsite/docs/Methodology.md#aws-2
-const awsCO2_per_kWh = 0.000415755 * Math.pow(10, 6);
+const awsCO2g_per_kWh = 0.000415755 * Math.pow(10, 6);
 
 // Source: global averages per Sustainable Web Design model
 // https://sustainablewebdesign.org/estimating-digital-emissions/#faq
 const userOperationalkWh_per_GB =
   (421 * Math.pow(10, 9)) / (5.29 * Math.pow(10, 12));
-const userEmbodiedCO2_per_GB =
+const userEmbodiedkWh_per_GB =
   (430 * Math.pow(10, 9)) / (5.29 * Math.pow(10, 12));
-const userCO2_per_GB = userOperationalkWh_per_GB + userEmbodiedCO2_per_GB;
+const userkWh_per_GB = userOperationalkWh_per_GB + userEmbodiedkWh_per_GB;
+const userCO2g_per_kWh = 494;
 
 export const co2 = defineMiddleware(async (context, next) => {
   if (context.url.pathname.endsWith("_actions/getCo2")) return next();
@@ -84,12 +85,12 @@ function getServerCO2(start: number) {
   const time = performance.now() - start;
   const hours = time / 1000 / 3600;
   const kWh = hours * awskW;
-  const co2 = kWh * awsCO2_per_kWh;
+  const co2 = kWh * awsCO2g_per_kWh;
   return co2;
 }
 
 function getClientCO2(bytes: number) {
-  const kWh = (bytes / Math.pow(10, 12)) * userCO2_per_GB;
-  const co2 = kWh * awsCO2_per_kWh;
+  const kWh = (bytes / Math.pow(10, 12)) * userkWh_per_GB;
+  const co2 = kWh * userCO2g_per_kWh;
   return co2;
 }
