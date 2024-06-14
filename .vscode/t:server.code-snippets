@@ -1,0 +1,10 @@
+{
+  "t:server": {
+    "scope": "",
+    "prefix": "t:server",
+    "body": [
+      "  const time = performance.now() - start;\n  const hours = time / 1000 / 3600;\n  const kWh = hours * awskW;\n  const co2 = kWh * awsCO2_per_kWh;\n  return co2;"
+    ],
+    "description": ""
+  }
+}

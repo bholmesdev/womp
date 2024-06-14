@@ -1,0 +1,10 @@
+{
+  "t:hours": {
+    "scope": "",
+    "prefix": "t:hours",
+    "body": [
+      "  const hours = time / 1000 / 3600;"
+    ],
+    "description": ""
+  }
+}

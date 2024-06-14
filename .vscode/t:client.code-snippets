@@ -1,0 +1,10 @@
+{
+  "t:client": {
+    "scope": "",
+    "prefix": "t:client",
+    "body": [
+      "  const kWh = (bytes / Math.pow(10, 12)) * userCO2_per_GB;\n  const co2 = kWh * awsCO2_per_kWh;\n  return co2;"
+    ],
+    "description": ""
+  }
+}

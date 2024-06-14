@@ -1,0 +1,10 @@
+{
+  "t:response": {
+    "scope": "",
+    "prefix": "t:response",
+    "body": [
+      "      return new Response(\"File too large\", { status: 413 });"
+    ],
+    "description": ""
+  }
+}
